@@ -1,0 +1,22 @@
+[
+{"0": "import scrapy"},
+{"1": ""},
+{"2": ""},
+{"3": "class StackOverflowSpider(scrapy.Spider):"},
+{"4": "    name = 'stackoverflow'"},
+{"5": "    start_urls = ['http://stackoverflow.com/questions?sort=votes']"},
+{"6": ""},
+{"7": "    def parse(self, response):"},
+{"8": "        for href in response.css('.question-summary h3 a::attr(href)'):"},
+{"9": "            full_url = response.urljoin(href.extract())"},
+{"10": "            yield scrapy.Request(full_url, callback=self.parse_question)"},
+{"11": ""},
+{"12": "    def parse_question(self, response):"},
+{"13": "        yield {"},
+{"14": "            'title': response.css('h1 a::text').extract()[0],"},
+{"15": "            'votes': response.css('.question .vote-count-post::text').extract()[0],"},
+{"16": "            'body': response.css('.question .post-text').extract()[0],"},
+{"17": "            'tags': response.css('.question .post-tag::text').extract(),"},
+{"18": "            'link': response.url,"},
+{"19": "        }"}
+]
